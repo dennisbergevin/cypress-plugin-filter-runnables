@@ -135,10 +135,14 @@ clearBtn?.addEventListener('click', function () {
 
 searchInput?.addEventListener('input', (event) => {
   const searchTerm = event.target.value.toLowerCase();
+
+  scanRunnables(searchTerm);
+});
+
+const scanRunnables = (searchTerm) => {
   const testsAndSuites = window.top?.document.querySelectorAll(
     '.test.runnable, .suite.runnable'
   );
-
   for (let i = 0; i < testsAndSuites.length; i++) {
     const itemText = testsAndSuites[i].textContent.toLowerCase();
 
@@ -157,4 +161,28 @@ searchInput?.addEventListener('input', (event) => {
       }
     }
   }
-});
+};
+
+// Wrapping logic within isInteractive check
+// This targets cypress open mode where user can switch specs
+if (Cypress.config('isInteractive')) {
+  Cypress.on('window:unload', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    // Store the current Cypress test runner url
+    // This is to check against any spec change in test runner while a filter search is entered
+    // If a user does switch spec while filter is active, the filter search will be reset
+    const sidebarDebugLinkPage = window.top?.document.querySelector(
+      '[data-cy="sidebar-link-debug-page"]'
+    );
+    if (
+      window.top?.document.URL !=
+        sidebarDebugLinkPage.getAttribute('data-url') &&
+      searchInput.value !== ''
+    ) {
+      clearBtn.click();
+    }
+    sidebarDebugLinkPage.setAttribute('data-url', window.top?.document.URL);
+
+    scanRunnables(searchTerm);
+  });
+}

@@ -1,6 +1,6 @@
 {
   "name": "cypress-plugin-filter-runnables",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Cypress plugin that allows user to filter suites/tests in Cypress Test Runner.",
   "main": "./index.js",
   "keywords": [
