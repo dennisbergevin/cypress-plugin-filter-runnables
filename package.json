@@ -1,0 +1,27 @@
+{
+  "name": "cypress-plugin-filter-runnables",
+  "version": "1.0.0",
+  "description": "Cypress plugin that allows user to filter suites/tests in Cypress Test Runner.",
+  "main": "./index.js",
+  "keywords": [
+    "cypress",
+    "testing",
+    "cypress-plugin"
+  ],
+  "devDependencies": {
+    "cypress": "^15.5.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": "Dennis Bergevin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dennisbergevin/cypress-plugin-filter-runnables.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dennisbergevin/cypress-plugin-filter-runnables/issues"
+  },
+  "homepage": "https://github.com/dennisbergevin/cypress-plugin-filter-runnables#readme"
+}
