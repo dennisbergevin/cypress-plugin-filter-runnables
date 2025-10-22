@@ -139,26 +139,38 @@ searchInput?.addEventListener('input', (event) => {
   scanRunnables(searchTerm);
 });
 
-const scanRunnables = (searchTerm) => {
+const scanRunnables = (searchInput) => {
   const testsAndSuites = window.top?.document.querySelectorAll(
     '.test.runnable, .suite.runnable'
   );
-  for (let i = 0; i < testsAndSuites.length; i++) {
-    const itemText = testsAndSuites[i].textContent.toLowerCase();
+  if (!testsAndSuites) return;
 
-    if (itemText.includes(searchTerm)) {
-      testsAndSuites[i].style.display = '';
+  // Split search groups by ";"
+  const groups = searchInput
+    .toLowerCase()
+    .split(';')
+    .map((group) => group.replace(/,/g, ' ').split(/\s+/).filter(Boolean))
+    .filter((group) => group.length > 0); // Remove empty groups
+
+  for (let i = 0; i < testsAndSuites.length; i++) {
+    const el = testsAndSuites[i];
+    const itemText = el.textContent.toLowerCase();
+    const suiteText = el
+      .closest('.suite.runnable')
+      ?.innerText.split('\n')[0]
+      .toLowerCase();
+
+    // A test matches if it satisfies ANY group
+    const matchesAnyGroup = groups.some((group) =>
+      group.every((term) => {
+        return itemText.includes(term) || suiteText.includes(term);
+      })
+    );
+
+    if (searchInput === '') {
+      el.style.display = '';
     } else {
-      const closestSuiteText = testsAndSuites[i]
-        .closest('.suite.runnable')
-        .innerText.split('\n')[0]
-        .toLowerCase();
-      if (closestSuiteText.includes(searchTerm)) {
-        testsAndSuites[i].style.display = '';
-      } else {
-        testsAndSuites[i].click;
-        testsAndSuites[i].style.display = 'none';
-      }
+      el.style.display = matchesAnyGroup ? '' : 'none';
     }
   }
 };
