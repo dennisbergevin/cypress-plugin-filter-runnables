@@ -8,7 +8,6 @@ Cypress plugin that allows user to filter suites/tests in Cypress Test Runner.
 
 ![cypress-plugin-filter-runnables-demo-1](https://github.com/user-attachments/assets/fc9f3a8a-5de2-4ca1-8b73-2e26bacb3bf6)
 
-
 ## Features
 
 - 🔍 A new UI search bar within `cypress open` to filter suites/tests in a given spec
@@ -43,6 +42,12 @@ import 'cypress-plugin-filter-runnables';
 Run `npx cypress open` to launch Cypress in `open` mode.
 
 Choose a spec file to run and you will be able to filter by suite/test title at the top of the reporter.
+
+You can combine multiple searches by separating them with a semicolon (`;`).
+
+Example:
+
+`@smoke; can add todo`
 
 ### Pairing with `cypress-plugin-grep-boxes`
 
