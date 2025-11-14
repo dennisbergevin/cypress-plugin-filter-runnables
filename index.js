@@ -140,9 +140,8 @@ searchInput?.addEventListener('input', (event) => {
 });
 
 const scanRunnables = (searchInput) => {
-  const testsAndSuites =
-    window.top?.document.querySelectorAll('.test.runnable');
-  if (!testsAndSuites) return;
+  const testRunnables = window.top?.document.querySelectorAll('.test.runnable');
+  if (!testRunnables) return;
 
   // Split search groups by ";"
   const groups = searchInput
@@ -151,8 +150,8 @@ const scanRunnables = (searchInput) => {
     .map((group) => group.replace(/,/g, ' ').split(/\s+/).filter(Boolean))
     .filter((group) => group.length > 0); // Remove empty groups
 
-  for (let i = 0; i < testsAndSuites.length; i++) {
-    const el = testsAndSuites[i];
+  for (let i = 0; i < testRunnables.length; i++) {
+    const el = testRunnables[i];
     const itemText = el.textContent.toLowerCase();
     const suiteText = el
       .closest('.suite.runnable')
