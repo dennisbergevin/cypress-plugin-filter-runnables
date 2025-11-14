@@ -53,7 +53,7 @@ Example:
 
 The [cypress-plugin-grep-boxes](https://github.com/dennisbergevin/cypress-plugin-grep-boxes) is a great companion for this plugin.
 
-Paired with `cypress-plugin-grep-boxes` (`@bahmutov/cy-grep` is also required), you can filter suites/tests and use the main toggle or individual checkboxes to run only the tests you've filtered:
+Paired with `cypress-plugin-grep-boxes` (`@bahmutov/cy-grep` is also required), you can filter suites/tests and use the main toggle (v2.1.0 of cypress-plugin-grep-boxes) or individual checkboxes to run only the tests you've filtered:
 
 ![cypress-plugin-filter-runnables-demo-2](https://github.com/user-attachments/assets/59053e87-cbfa-4a49-81a0-6212abc94ba8)
 
