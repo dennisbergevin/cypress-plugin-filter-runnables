@@ -203,13 +203,8 @@ if (Cypress.config('isInteractive')) {
 MutationObserver = window.MutationObserver;
 
 var observer = new MutationObserver(function () {
-  if (
-    window.top?.document.querySelectorAll('#grepTestToggle:checked').length ===
-    0
-  ) {
-    // fired when a mutation occurs
-    scanRunnables(searchInput.value);
-  }
+  // fired when a mutation occurs
+  scanRunnables(searchInput.value);
 });
 
 // defining the window.top?.document to be observed by the observer
