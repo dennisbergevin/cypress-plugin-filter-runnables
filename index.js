@@ -140,10 +140,8 @@ searchInput?.addEventListener('input', (event) => {
 });
 
 const scanRunnables = (searchInput) => {
-  const testsAndSuites = window.top?.document.querySelectorAll(
-    '.test.runnable, .suite.runnable'
-  );
-  if (!testsAndSuites) return;
+  const testRunnables = window.top?.document.querySelectorAll('.test.runnable');
+  if (!testRunnables) return;
 
   // Split search groups by ";"
   const groups = searchInput
@@ -152,8 +150,8 @@ const scanRunnables = (searchInput) => {
     .map((group) => group.replace(/,/g, ' ').split(/\s+/).filter(Boolean))
     .filter((group) => group.length > 0); // Remove empty groups
 
-  for (let i = 0; i < testsAndSuites.length; i++) {
-    const el = testsAndSuites[i];
+  for (let i = 0; i < testRunnables.length; i++) {
+    const el = testRunnables[i];
     const itemText = el.textContent.toLowerCase();
     const suiteText = el
       .closest('.suite.runnable')
@@ -198,3 +196,18 @@ if (Cypress.config('isInteractive')) {
     scanRunnables(searchTerm);
   });
 }
+
+// To account for when the collapsible runnables are removed, persist filtered runnables
+// watching for changes to DOM structure
+MutationObserver = window.MutationObserver;
+
+var observer = new MutationObserver(function () {
+  // fired when a mutation occurs
+  scanRunnables(searchInput.value);
+});
+
+// defining the window.top?.document to be observed by the observer
+observer.observe(window.top?.document, {
+  subtree: true,
+  attributes: true,
+});
