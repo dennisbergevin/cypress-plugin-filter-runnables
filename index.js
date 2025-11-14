@@ -140,9 +140,8 @@ searchInput?.addEventListener('input', (event) => {
 });
 
 const scanRunnables = (searchInput) => {
-  const testsAndSuites = window.top?.document.querySelectorAll(
-    '.test.runnable, .suite.runnable'
-  );
+  const testsAndSuites =
+    window.top?.document.querySelectorAll('.test.runnable');
   if (!testsAndSuites) return;
 
   // Split search groups by ";"
@@ -198,3 +197,23 @@ if (Cypress.config('isInteractive')) {
     scanRunnables(searchTerm);
   });
 }
+
+// To account for when the collapsible runnables are removed, persist filtered runnables
+// watching for changes to DOM structure
+MutationObserver = window.MutationObserver;
+
+var observer = new MutationObserver(function () {
+  if (
+    window.top?.document.querySelectorAll('#grepTestToggle:checked').length ===
+    0
+  ) {
+    // fired when a mutation occurs
+    scanRunnables(searchInput.value);
+  }
+});
+
+// defining the window.top?.document to be observed by the observer
+observer.observe(window.top?.document, {
+  subtree: true,
+  attributes: true,
+});
