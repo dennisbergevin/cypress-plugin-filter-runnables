@@ -201,20 +201,22 @@ if (Cypress.config('isInteractive')) {
   });
 }
 
-// To account for when the collapsible runnables are removed, persist filtered runnables
-// watching for changes to DOM structure
-MutationObserver = window.MutationObserver;
+if (Cypress.config('isInteractive')) {
+  // To account for when the collapsible runnables are removed, persist filtered runnables
+  // watching for changes to DOM structure
+  MutationObserver = window.MutationObserver;
 
-var observer = new MutationObserver(function () {
-  const searchInput = window.top?.document.querySelector(
-    '#test-suite-filter-search'
-  );
-  // fired when a mutation occurs
-  scanRunnables(searchInput?.value);
-});
+  var observer = new MutationObserver(function () {
+    const searchInput = window.top?.document.querySelector(
+      '#test-suite-filter-search'
+    );
+    // fired when a mutation occurs
+    scanRunnables(searchInput?.value);
+  });
 
-// defining the window.top?.document to be observed by the observer
-observer.observe(window.top?.document, {
-  subtree: true,
-  attributes: true,
-});
+  // defining the window.top?.document to be observed by the observer
+  observer.observe(window.top?.document, {
+    subtree: true,
+    attributes: true,
+  });
+}
