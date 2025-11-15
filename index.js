@@ -3,8 +3,9 @@
  */
 
 if (
+  Cypress.config('isInteractive') &&
   window.top?.document.querySelectorAll('#test-suite-filter-search').length ===
-  0
+    0
 ) {
   const style = document.createElement('style');
   style.textContent = `
@@ -139,13 +140,13 @@ searchInput?.addEventListener('input', (event) => {
   scanRunnables(searchTerm);
 });
 
-const scanRunnables = (searchInput) => {
+const scanRunnables = (searchTerm) => {
   const testRunnables = window.top?.document.querySelectorAll('.test.runnable');
   if (!testRunnables) return;
 
   // Split search groups by ";"
-  const groups = searchInput
-    .toLowerCase()
+  const groups = searchTerm
+    ?.toLowerCase()
     .split(';')
     .map((group) => group.replace(/,/g, ' ').split(/\s+/).filter(Boolean))
     .filter((group) => group.length > 0); // Remove empty groups
@@ -159,13 +160,13 @@ const scanRunnables = (searchInput) => {
       .toLowerCase();
 
     // A test matches if it satisfies ANY group
-    const matchesAnyGroup = groups.some((group) =>
+    const matchesAnyGroup = groups?.some((group) =>
       group.every((term) => {
         return itemText.includes(term) || suiteText.includes(term);
       })
     );
 
-    if (searchInput === '') {
+    if (searchTerm === '') {
       el.style.display = '';
     } else {
       el.style.display = matchesAnyGroup ? '' : 'none';
@@ -177,7 +178,10 @@ const scanRunnables = (searchInput) => {
 // This targets cypress open mode where user can switch specs
 if (Cypress.config('isInteractive')) {
   Cypress.on('window:unload', () => {
-    const searchTerm = searchInput.value.toLowerCase();
+    const searchInput = window.top?.document.querySelector(
+      '#test-suite-filter-search'
+    );
+    const searchTerm = searchInput?.value.toLowerCase();
     // Store the current Cypress test runner url
     // This is to check against any spec change in test runner while a filter search is entered
     // If a user does switch spec while filter is active, the filter search will be reset
@@ -187,7 +191,7 @@ if (Cypress.config('isInteractive')) {
     if (
       window.top?.document.URL !=
         sidebarDebugLinkPage.getAttribute('data-url') &&
-      searchInput.value !== ''
+      searchInput?.value !== ''
     ) {
       clearBtn.click();
     }
@@ -197,17 +201,22 @@ if (Cypress.config('isInteractive')) {
   });
 }
 
-// To account for when the collapsible runnables are removed, persist filtered runnables
-// watching for changes to DOM structure
-MutationObserver = window.MutationObserver;
+if (Cypress.config('isInteractive')) {
+  // To account for when the collapsible runnables are removed, persist filtered runnables
+  // watching for changes to DOM structure
+  MutationObserver = window.MutationObserver;
 
-var observer = new MutationObserver(function () {
-  // fired when a mutation occurs
-  scanRunnables(searchInput.value);
-});
+  var observer = new MutationObserver(function () {
+    const searchInput = window.top?.document.querySelector(
+      '#test-suite-filter-search'
+    );
+    // fired when a mutation occurs
+    scanRunnables(searchInput?.value);
+  });
 
-// defining the window.top?.document to be observed by the observer
-observer.observe(window.top?.document, {
-  subtree: true,
-  attributes: true,
-});
+  // defining the window.top?.document to be observed by the observer
+  observer.observe(window.top?.document, {
+    subtree: true,
+    attributes: true,
+  });
+}
