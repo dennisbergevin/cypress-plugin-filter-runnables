@@ -1,6 +1,6 @@
 {
   "name": "cypress-plugin-filter-runnables",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Cypress plugin that allows user to filter suites/tests in Cypress Test Runner.",
   "main": "./index.js",
   "keywords": [
@@ -9,7 +9,7 @@
     "cypress-plugin"
   ],
   "devDependencies": {
-    "cypress": "^15.12.0"
+    "cypress": "^15.13.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
