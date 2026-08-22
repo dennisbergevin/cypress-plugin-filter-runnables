@@ -29,12 +29,9 @@ if (
   const specContainer = window.top?.document
     .querySelector('iframe')
     ?.contentDocument?.querySelector('.spec-container');
-  const runnableHeader = window.top?.document
-    .querySelector('iframe')
-    ?.contentDocument?.querySelector('.runnable-header');
 
   window.top?.document.head.appendChild(style);
-  const parentEl = Cypress.version >= '15.0.0' ? specContainer : runnableHeader;
+  const parentEl = specContainer;
 
   parentEl.insertAdjacentHTML(
     'beforebegin',
