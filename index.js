@@ -4,7 +4,9 @@
 
 if (
   Cypress.config('isInteractive') &&
-  window.top?.document.querySelectorAll('#test-suite-filter-search').length ===
+  window.top?.document
+    .querySelector('iframe')
+    ?.contentDocument?.querySelectorAll('#test-suite-filter-search').length ===
     0
 ) {
   const style = document.createElement('style');
@@ -24,8 +26,12 @@ if (
 }
 `;
 
-  const specContainer = window.top?.document.querySelector('.spec-container');
-  const runnableHeader = window.top?.document.querySelector('.runnable-header');
+  const specContainer = window.top?.document
+    .querySelector('iframe')
+    ?.contentDocument?.querySelector('.spec-container');
+  const runnableHeader = window.top?.document
+    .querySelector('iframe')
+    ?.contentDocument?.querySelector('.runnable-header');
 
   window.top?.document.head.appendChild(style);
   const parentEl = Cypress.version >= '15.0.0' ? specContainer : runnableHeader;
@@ -109,22 +115,24 @@ if (
   );
 }
 
-const searchInput = window.top?.document.querySelector(
-  '#test-suite-filter-search'
-);
-const clearBtn = window.top?.document.querySelector(
-  '#clear-test-suite-filter-search'
-);
+const searchInput = window.top?.document
+  .querySelector('iframe')
+  ?.contentDocument?.querySelector('#test-suite-filter-search');
+const clearBtn = window.top?.document
+  .querySelector('iframe')
+  ?.contentDocument?.querySelector('#clear-test-suite-filter-search');
 
 searchInput?.addEventListener('focus', function () {
   window.top?.document
-    .querySelector('#search-icon-test-suite-filter')
+    .querySelector('iframe')
+    ?.contentDocument?.querySelector('#search-icon-test-suite-filter')
     .setAttribute('class', 'icon-dark-indigo-300 icon-light-grey-1700');
 });
 
 searchInput?.addEventListener('focusout', function () {
   window.top?.document
-    .querySelector('#search-icon-test-suite-filter')
+    .querySelector('iframe')
+    ?.contentDocument?.querySelector('#search-icon-test-suite-filter')
     .setAttribute('class', 'icon-dark-gray-800 icon-light-gray-1000');
 });
 
@@ -141,7 +149,9 @@ searchInput?.addEventListener('input', (event) => {
 });
 
 const scanRunnables = (searchTerm) => {
-  const testRunnables = window.top?.document.querySelectorAll('.test.runnable');
+  const testRunnables = window.top?.document
+    .querySelector('iframe')
+    ?.contentDocument?.querySelectorAll('.test.runnable');
   if (!testRunnables) return;
 
   // Split search groups by ";"
@@ -178,9 +188,9 @@ const scanRunnables = (searchTerm) => {
 // This targets cypress open mode where user can switch specs
 if (Cypress.config('isInteractive')) {
   Cypress.on('window:unload', () => {
-    const searchInput = window.top?.document.querySelector(
-      '#test-suite-filter-search'
-    );
+    const searchInput = window.top?.document
+      .querySelector('iframe')
+      ?.contentDocument?.querySelector('#test-suite-filter-search');
     const searchTerm = searchInput?.value.toLowerCase();
     // Store the current Cypress test runner url
     // This is to check against any spec change in test runner while a filter search is entered
@@ -207,9 +217,9 @@ if (Cypress.config('isInteractive')) {
   MutationObserver = window.MutationObserver;
 
   var observer = new MutationObserver(function () {
-    const searchInput = window.top?.document.querySelector(
-      '#test-suite-filter-search'
-    );
+    const searchInput = window.top?.document
+      .querySelector('iframe')
+      ?.contentDocument?.querySelector('#test-suite-filter-search');
     // fired when a mutation occurs
     scanRunnables(searchInput?.value);
   });
