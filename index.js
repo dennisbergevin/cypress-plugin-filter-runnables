@@ -31,9 +31,8 @@ if (
     ?.contentDocument?.querySelector('.spec-container');
 
   window.top?.document.head.appendChild(style);
-  const parentEl = specContainer;
 
-  parentEl.insertAdjacentHTML(
+  specContainer.insertAdjacentHTML(
     'beforebegin',
     `
 <div class="border-b border-gray-800 h-[64px] mx-[16px] auto-cols-max grid grid-flow-col gap-[8px] grid-cols-[minmax(0,1fr)] pointer-cursor items-center">
